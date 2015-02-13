@@ -1,5 +1,154 @@
-extends layout
+doctype html
+html
+	head
+		title= title
+		meta(charset="utf-8")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
+		script(src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js")
+		link(rel='stylesheet', href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css')
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
+	body
+	    div(style="width:80%")
+		div(class="alert alert-success", role="alert") 剩余TB经费
+			span#left 1000 元
+		div(class="panel panel-default")
+			div(class="panel-heading") 报销情况
+			table(class="table")
+				tr
+					th 月份
+					th 组员人数
+					th TB经费
+					th 组员姓名
+				- each reimburse in reimburses
+					tr
+						td= reimburse.date
+						td= reimburse.peopleNum
+						td= reimburse.money
+						td= reimburse.people
+		div#addReimburse(class="btn btn-default") 添加报销记录
+		
+		form#addReimburseForm(class="form-inline", style="margin-top:20px")
+			div(class="form-group")
+				label(for="reimburse-date", style="margin-left:5px") 时间
+				input#reimburse-date(type="text", style="margin-left:5px", class="form-control", placeholder="20141001")
+			div(class="form-group")
+				label(for="reimburse-peopleNum", style="margin-left:5px") 组员人数
+				input#reimburse-peopleNum(type="text", style="margin-left:5px", class="form-control", placeholder="4")
+			div(class="form-group")
+				label(for="reimburse-money", style="margin-left:5px") TB经费
+				input#reimburse-money(type="text", class="form-control", style="margin-left:5px", placeholder="10000")
+			div(class="form-group")
+				label(for="reimburse-people", style="margin-left:5px") 组员姓名
+				input#reimburse-people(type="text",style="margin-left:5px", class="form-control", placeholder="努尔哈赤")
+			button#addReimburseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 提交
+			button#cancelReimburseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 取消
+	
+		div(class="panel panel-default", style="margin-top:20px")
+			div(class="panel-heading") 消费情况
+			table(class="table")
+				tr
+					th 时间
+					th 参加人员
+					th 活动内容
+					th 消费金额
+				- each expense in expenses
+					tr
+						td= expense.date
+						td= expense.people
+						td= expense.content
+						td= expense.money
+		div#addExpense(class="btn btn-default") 添加消费记录
 
-block content
-  h1= title
-  p Welcome to #{title}
+		form#addExpenseForm(class="form-inline", style="margin-top:20px")
+			div(class="form-group")
+				label(for="expense-date", style="margin-left:5px") 时间
+				input#expense-date(type="text", style="margin-left:5px", class="form-control", placeholder="20141001")
+			div(class="form-group")
+				label(for="expense-people", style="margin-left:5px") 参加人员
+				input#expense-people(type="text", style="margin-left:5px", class="form-control", placeholder="4")
+			div(class="form-group")
+				label(for="expense-content", style="margin-left:5px") 活动内容
+				input#expense-content(type="text", class="form-control", style="margin-left:5px", placeholder="10000")
+			div(class="form-group")
+				label(for="expense-money", style="margin-left:5px") 消费金额
+				input#expense-money(type="text",style="margin-left:5px", class="form-control", placeholder="努尔哈赤")
+			button#addExpenseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 提交
+			button#cancelExpenseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 取消
+
+
+	script(type='text/javascript').
+
+		function isDate(d) {return (d instanceof Date) || (Date.parse(d) != "NaN" && Date.parse(d) > 0);}
+		function isNumber(n) {return !isNaN(n);}
+		function isPositiveNum(n) {return isNumber(n) && n > 0;}
+		$(document).ready(function(){
+			
+			// 报销情况 时间输入框
+			$("#reimburse-date").datepicker();			
+			// 消费情况 时间输入框
+			$("#expense-date").datepicker();
+			// 消费情况 添加消费记录按钮
+			$("#addExpense").click(function(){
+				$("#addExpenseForm").toggle("slow");
+			});
+
+			// 消费情况 提交按钮
+			$("#addExpenseBtn").click(function(){
+				var date = $("#expense-date").val();
+				var people = $("#expense-people").val();
+				var content = $("#expense-content").val();
+				var money = $("#expense-money").val();
+
+				if(!date) {alert("日期必须填写");return;} else if(!isDate(date)) {alert("时间必须为日期格式");return;}
+				if(!people) {alert("参与人员必须填写");return;}
+				if(!content) {alert("活动内容必须填写");return;}
+				if(!money) {alert("活动内容必须填写");return;} else if(!isPositiveNum(money)) {alert("消费金额必须为数字");return;}
+
+				var expense = new Object();
+				expense.date = date;
+				expense.people = people;
+				expense.content = content;
+				expense.money = money;
+
+				$.post("/tb/expense/add", expense, function(){
+					alert(result);
+				});
+			});
+			
+
+			// 报销情况 添加报销记录按钮
+			$("#addReimburse").click(function(){
+				$("#addReimburseForm").toggle("slow");
+			});
+
+			// 报销情况 取消按钮
+			$("#canReimburseBtn").click(function(){
+				$("#reimburse-date").val("");
+				$("#reimburse-people").val("");
+				$("#reimburse-money").val("");
+				$("#reimburse-people").val("");
+			});
+			// 报销情况 提交按钮
+			$("#addReimburseBtn").click(function(){
+				var date = $("#reimburse-date").val();
+				var peopleNum = $("#reimburse-peopleNum").val();
+				var tbMoney = $("#reimburse-money").val();
+				var people = $("#reimburse-people").val();
+				
+				if(!date) {alert("日期必须填写");return;} else if(!isDate(date)){alert("时间必须为日期格式");return;}
+				if(!peopleNum) {alert("组员人数必须填写");return;} else if(!isPositiveNum(peopleNum)) {alert("组员人数只能为数字");return;}
+				if(!tbMoney) {alert("TB经费必须填写");return;} else if(!isPositiveNum(tbMoney)) {alert("TB经费只能为数字");return;}
+				if(!people) {alert("组员姓名必须填写");return;}
+				
+				var reimburse = new Object();
+				reimburse.date = date;
+				reimburse.peopleNum = peopleNum;
+				reimburse.tbMoney = tbMoney;
+				reimburse.people = people;				
+
+				$.post("/tb/reimburse/add", reimburse, function(result){
+					alert(result);
+				});
+			});
+		});
+
