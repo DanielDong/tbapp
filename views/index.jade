@@ -8,72 +8,74 @@ html
 		link(rel='stylesheet', href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css')
 		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
 	body
-	    div(style="width:80%")
-		div(class="alert alert-success", role="alert") 剩余TB经费
-			span#left 1000 元
-		div(class="panel panel-default")
-			div(class="panel-heading") 报销情况
-			table(class="table")
-				tr
-					th 月份
-					th 组员人数
-					th TB经费
-					th 组员姓名
-				- each reimburse in reimburses
+		div(style="width:50%; margin-left:auto; margin-right:auto; margin-top:30px;")
+			div(class="alert alert-info", role="alert") 剩余TB经费
+				span#left 1000 元
+			div(class="panel panel-primary")
+				div(class="panel-heading") 报销情况
+					span#reimburseCount(class="badge", style="margin-left:10px")= reimburseCount
+				table#reimburseTable(class="table")
 					tr
-						td= reimburse.date
-						td= reimburse.peopleNum
-						td= reimburse.money
-						td= reimburse.people
-		div#addReimburse(class="btn btn-default") 添加报销记录
+						th 月份
+						th 组员人数
+						th TB经费
+						th 组员姓名
+					- each reimburse in reimburses
+						tr
+							td= reimburse.date
+							td= reimburse.peopleNum
+							td= reimburse.money
+							td= reimburse.people
+			div#addReimburse(class="btn btn-default") 添加报销记录
+			
+			div#addReimburseForm(class="well well-lg", style="margin-top:20px")
+				div(class="form-group")
+					label(for="reimburse-date", style="margin-left:5px") 时间
+					input#reimburse-date(type="text", style="margin-left:5px", class="form-control", placeholder="20141001")
+				div(class="form-group")
+					label(for="reimburse-peopleNum", style="margin-left:5px") 组员人数
+					input#reimburse-peopleNum(type="text", style="margin-left:5px", class="form-control", placeholder="4")
+				div(class="form-group")
+					label(for="reimburse-money", style="margin-left:5px") TB经费
+					input#reimburse-money(type="text", class="form-control", style="margin-left:5px", placeholder="10000")
+				div(class="form-group")
+					label(for="reimburse-people", style="margin-left:5px") 组员姓名
+					input#reimburse-people(type="text",style="margin-left:5px", class="form-control", placeholder="努尔哈赤")
+				button#addReimburseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 提交
+				button#cancelReimburseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 取消
 		
-		form#addReimburseForm(class="form-inline", style="margin-top:20px")
-			div(class="form-group")
-				label(for="reimburse-date", style="margin-left:5px") 时间
-				input#reimburse-date(type="text", style="margin-left:5px", class="form-control", placeholder="20141001")
-			div(class="form-group")
-				label(for="reimburse-peopleNum", style="margin-left:5px") 组员人数
-				input#reimburse-peopleNum(type="text", style="margin-left:5px", class="form-control", placeholder="4")
-			div(class="form-group")
-				label(for="reimburse-money", style="margin-left:5px") TB经费
-				input#reimburse-money(type="text", class="form-control", style="margin-left:5px", placeholder="10000")
-			div(class="form-group")
-				label(for="reimburse-people", style="margin-left:5px") 组员姓名
-				input#reimburse-people(type="text",style="margin-left:5px", class="form-control", placeholder="努尔哈赤")
-			button#addReimburseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 提交
-			button#cancelReimburseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 取消
-	
-		div(class="panel panel-default", style="margin-top:20px")
-			div(class="panel-heading") 消费情况
-			table(class="table")
-				tr
-					th 时间
-					th 参加人员
-					th 活动内容
-					th 消费金额
-				- each expense in expenses
+			div(class="panel panel-primary", style="margin-top:20px")
+				div(class="panel-heading") 消费情况
+					span#expenseCount(class="badge", style="margin-left:10px")= expenseCount
+				table#expenseTable(class="table")
 					tr
-						td= expense.date
-						td= expense.people
-						td= expense.content
-						td= expense.money
-		div#addExpense(class="btn btn-default") 添加消费记录
+						th 时间
+						th 参加人员
+						th 活动内容
+						th 消费金额
+					- each expense in expenses
+						tr
+							td= expense.date
+							td= expense.people
+							td= expense.content
+							td= expense.money
+			div#addExpense(class="btn btn-default") 添加消费记录
 
-		form#addExpenseForm(class="form-inline", style="margin-top:20px")
-			div(class="form-group")
-				label(for="expense-date", style="margin-left:5px") 时间
-				input#expense-date(type="text", style="margin-left:5px", class="form-control", placeholder="20141001")
-			div(class="form-group")
-				label(for="expense-people", style="margin-left:5px") 参加人员
-				input#expense-people(type="text", style="margin-left:5px", class="form-control", placeholder="4")
-			div(class="form-group")
-				label(for="expense-content", style="margin-left:5px") 活动内容
-				input#expense-content(type="text", class="form-control", style="margin-left:5px", placeholder="10000")
-			div(class="form-group")
-				label(for="expense-money", style="margin-left:5px") 消费金额
-				input#expense-money(type="text",style="margin-left:5px", class="form-control", placeholder="努尔哈赤")
-			button#addExpenseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 提交
-			button#cancelExpenseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 取消
+			div#addExpenseForm(class="well well-lg", style="margin-top:20px; ")
+				div(class="form-group")
+					label(for="expense-date", style="margin-left:5px") 时间
+					input#expense-date(type="text", style="margin-left:5px", class="form-control", placeholder="20141001")
+				div(class="form-group")
+					label(for="expense-people", style="margin-left:5px") 参加人员
+					input#expense-people(type="text", style="margin-left:5px", class="form-control", placeholder="4")
+				div(class="form-group")
+					label(for="expense-content", style="margin-left:5px") 活动内容
+					input#expense-content(type="text", class="form-control", style="margin-left:5px", placeholder="10000")
+				div(class="form-group")
+					label(for="expense-money", style="margin-left:5px") 消费金额
+					input#expense-money(type="text",style="margin-left:5px", class="form-control", placeholder="努尔哈赤")
+				button#addExpenseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 提交
+				button#cancelExpenseBtn(type="submit", class="btn btn-default", style="margin-left:5px") 取消
 
 
 	script(type='text/javascript').
@@ -81,15 +83,39 @@ html
 		function isDate(d) {return (d instanceof Date) || (Date.parse(d) != "NaN" && Date.parse(d) > 0);}
 		function isNumber(n) {return !isNaN(n);}
 		function isPositiveNum(n) {return isNumber(n) && n > 0;}
+
+		function clearReimburse() {
+			$("#reimburse-date").val("");
+			$("#reimburse-people").val("");
+			$("#reimburse-money").val("");
+			$("#reimburse-people").val("");
+		}
+
+		function clearExpense() {
+			$("expense-date").val("");
+			$("expense-people").val("");
+			$("expense-content").val("");
+			$("expense-money").val("");
+		}
+
 		$(document).ready(function(){
 			
+			$("#addReimburseForm").hide();
+			$("#addExpenseForm").hide();
+
 			// 报销情况 时间输入框
 			$("#reimburse-date").datepicker();			
 			// 消费情况 时间输入框
 			$("#expense-date").datepicker();
+
 			// 消费情况 添加消费记录按钮
 			$("#addExpense").click(function(){
 				$("#addExpenseForm").toggle("slow");
+			});
+
+			// 消费情况 取消按钮
+			$("#cancelExpenseBtn").click(function(){
+				clearExpense();
 			});
 
 			// 消费情况 提交按钮
@@ -112,6 +138,8 @@ html
 
 				$.post("/tb/expense/add", expense, function(){
 					alert(result);
+					clearExpense();
+					location.reload();
 				});
 			});
 			
@@ -123,10 +151,7 @@ html
 
 			// 报销情况 取消按钮
 			$("#canReimburseBtn").click(function(){
-				$("#reimburse-date").val("");
-				$("#reimburse-people").val("");
-				$("#reimburse-money").val("");
-				$("#reimburse-people").val("");
+				clearReimburse();
 			});
 			// 报销情况 提交按钮
 			$("#addReimburseBtn").click(function(){
@@ -148,6 +173,8 @@ html
 
 				$.post("/tb/reimburse/add", reimburse, function(result){
 					alert(result);
+					clearReimburse();
+					location.reload();
 				});
 			});
 		});

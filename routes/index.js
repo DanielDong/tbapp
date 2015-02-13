@@ -13,17 +13,16 @@ router.get('/', function(req, res, next) {
 
 	var result = new Object();
 	result.title = 'TB费用管理';
+	result.reimburseCount = reimburses.length;
+	result.expenseCount = expenses.length;
 	result.expenses = expenses;
 	result.reimburses = reimburses;
 	
 	console.log(result);
 	res.render('index', result);
-  //res.render('index', { title: 'TB费用管理', 
-//expenses: [{date: 201410, peopleNum: 4, money: 2099, people:'人1，人2，人3'}],
-//reimburses: [{date: 20140101, people:'人5，人6', content:'杀人放火', money:23423}] });
 });
 
-/*添加TB条目*/
+/*添加TB报销条目*/
 router.post('/tb/reimburse/add', function(req, res, next){
 
 	var file = 'reimburse.json';
@@ -42,18 +41,23 @@ router.post('/tb/reimburse/add', function(req, res, next){
 	tbItem.money = tbMoney;
 	tbItem.people = people;
 
+	var id = 0;
 	var tbItems = new Array();
 	for(var i = 0; i < oldTbItems.length; i ++) {
+		id = oldTbItems[i].id;
 		tbItems.push(oldTbItems[i]);
 	}
+	tbItem.id = (id + 1);
+
 	tbItems.push(tbItem);
 	jf.writeFileSync(file, tbItems);
 
 	console.log("date: " + date + " people-num: " + peopleNum + " tb-money: " + tbMoney + " people: " + people);
 	
-	res.end('添加tb条目信息成功');
+	res.end('添加TB报销条目成功');
 });
 
+/*添加TB消费条目*/
 router.post('/tb/expense/add', function(req, res, next){
 	var file = "expense.json";
 	var oldTbItems = jf.readFileSync(file);
@@ -69,14 +73,17 @@ router.post('/tb/expense/add', function(req, res, next){
 	tbItem.content = content;
 	tbItem.money = money;
 
+	var id = 0;
 	var tbItems = new Array();
 	for(var i = 0; i < oldTbItems.length; i ++){
+		id = oldTbItems[i].id;
 		tbItems.push(oldTbItems[i]);
 	}
+	tbItem.id = (id + 1);
 	tbItems.push(tbItem);
 
 	jf.writeFileSync(file, tbItems);
-	res.end("添加tb条目信息成功");
+	res.end('添加TB消费条目成功');
 });
 
 
