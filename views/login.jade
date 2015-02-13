@@ -1,0 +1,50 @@
+doctype html
+html
+	head
+		title= title
+		meta(charset="utf-8")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
+		script(src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js")
+		link(rel='stylesheet', href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css')
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
+	body
+		div(class="panel panel-primary", style="position:absolute; width: 300px; height: 250px; margin:-125px 0 0 -150px; top:50%; left:50%")
+			div(class="panel-heading") 欢迎使用TB管理系统
+			div(class="panel-body")
+				form#loginForm
+					div(class="form-group")
+						label(for="lusername") 账户名
+						input#username(type="text", class="form-control")
+					div(class="form-group")
+						label(for="lpassword") 账户密码
+						input#password(type="text", class="form-control")
+					button#login(type="submit", class="btn btn-default") 登录
+					button#cancel(type="submit", class="btn btn-default", style="margin-left:10px") 取消
+
+	script(type="text/javascript").
+		$(document).ready(function(){
+
+			// 登录
+			$("#login").click(function(){
+				var username = $("#username").val();
+				var password = $("#password").val();
+
+				if(!username) {
+					alert("账户名不能为空");
+					return;
+				}
+
+				if(!password) {
+					alert("账户密码不能为空");
+					return;
+				}
+
+				alert("username: " + username + " pwd: " + password);
+			});
+
+			// 取消
+			$("#cancel").click(function(){
+				$("#username").val("");
+				$("#password").val("");
+			});
+		});
