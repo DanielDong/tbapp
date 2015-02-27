@@ -27,7 +27,7 @@ UserDAO.prototype.save = function(nameVal, passwordVal, callback){
 	var user = new User({name: nameVal, password: passwordVal});
 	user.save(function(err, user, numberAffected){
 		if(err){
-			callback(err, null, 0);
+			callback(err, null, -1);
 		} else {
 			callback(null, user, numberAffected);
 		}
@@ -37,7 +37,7 @@ UserDAO.prototype.save = function(nameVal, passwordVal, callback){
 UserDAO.prototype.update = function(nameVal, passwordOldVal, passwordNewVal, callback){
 	User.update({name: nameVal, password: passwordOldVal}, {password: passwordNewVal}, function(err, numberAffected, rawResponse){
 		if(err){
-			callback(err, 0, null);
+			callback(err, -1, null);
 		} else {
 			callback(null, numberAffected, rawResponse);
 		}
