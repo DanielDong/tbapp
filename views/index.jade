@@ -11,10 +11,12 @@ html
 		div(style="width:50%; margin-left:auto; margin-right:auto; margin-top:30px;")
 			div(class="alert alert-info", role="alert") 剩余TB经费
 				span#left 1000 元
+				button#login(class="btn btn-primary", style="float:right; position:relative; bottom: 7.5px") 登录
+
 			div(class="panel panel-primary")
 				div(class="panel-heading") 报销情况
 					span#reimburseCount(class="badge", style="margin-left:10px")= reimburseCount
-				table#reimburseTable(class="table")
+				table#reimburseTable(class="table table-hover")
 					tr
 						th 月份
 						th 组员人数
@@ -47,7 +49,7 @@ html
 			div(class="panel panel-primary", style="margin-top:20px")
 				div(class="panel-heading") 消费情况
 					span#expenseCount(class="badge", style="margin-left:10px")= expenseCount
-				table#expenseTable(class="table")
+				table#expenseTable(class="table table-hover")
 					tr
 						th 时间
 						th 参加人员
@@ -99,6 +101,11 @@ html
 		}
 
 		$(document).ready(function(){
+
+			// 登陆
+			$("#login").click(function(){
+				$(location).attr('href', '/login');
+			});
 			
 			$("#addReimburseForm").hide();
 			$("#addExpenseForm").hide();
