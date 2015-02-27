@@ -1,0 +1,24 @@
+doctype html
+html
+	head
+		title= title
+		meta(charset="utf-8")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
+		script(src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js")
+		link(rel='stylesheet', href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css')
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
+	body
+		div(style="width:50%; margin-left:auto; margin-right:auto; margin-top:30px;")
+			div(class="panel panel-default")
+				div(class="panel-heading") 已注册人员
+					span#registedCount(class="badge", style="margin-left: 10px")= registeredCount
+				table#registered(class="table table-hover")
+					tr
+						th 用户名
+						th 密码
+						th isAdmin
+					- each registeredUser in registeredUsers
+						tr
+							td= registeredUser.name
+							td= registeredUser.password
+							td= (registeredUser.isAdmin)?"是":"否" 

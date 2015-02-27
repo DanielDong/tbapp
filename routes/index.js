@@ -1,6 +1,7 @@
 var jf = require('jsonfile')
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 
 /* 获取index页 */
 router.get('/', function(req, res, next) {
@@ -22,9 +23,15 @@ router.get('/', function(req, res, next) {
 	res.render('index', result);
 });
 
-router.get('/login', function(req, res, next){
-	res.render('login', {title: 'TB费用管理'});
-});
+// router.get('/login', function(req, res, next){
+// 	res.render('login', {title: 'TB费用管理'});
+// });
+
+router.post('/login', passport.authenticate('local', {
+	successRedirect: '/',
+	failureRedirect: '/login',
+	failureFlash: true
+}));
 
 /*添加TB报销条目*/
 router.post('/tb/reimburse/add', function(req, res, next){

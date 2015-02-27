@@ -39,8 +39,15 @@ html
 					alert("账户密码不能为空");
 					return;
 				}
-				
-				alert("username: " + username + " pwd: " + password);
+
+				var user = new Object();
+				user.name = username;
+				user.password = password;
+				$.post('/users/save', user, function(result){
+					alert(result);
+				});
+
+				//alert("username: " + username + " pwd: " + password);
 			});
 
 			// 登录
@@ -58,7 +65,14 @@ html
 					return;
 				}
 
-				alert("username: " + username + " pwd: " + password);
+				var user = new Object();
+				user.name = username;
+				user.password = password;
+
+				$.post('/login', user, function(result){
+					alert(result);
+				});
+				//alert("username: " + username + " pwd: " + password);
 			});
 
 			// 取消

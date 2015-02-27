@@ -4,9 +4,39 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var UserDAO = require('./models/User.js');
+var passport = require('passport'),
+	LocalStrategy = require('passport-local').Strategy;
+passport.use(new LocalStrategy(
+	function(usernameVal, passwordVal, callback){
+		UserDAO.find({name: usernameVal, password: passwordVal}, function(err, user){
+			if(err) {
+				callback(err);
+			} else {
+				if(!user) {
+					callback(null, false, {message: '错误的用户名和密码'});
+				} else {
+					callback(null, user);
+				}
+			}
+		});
+	}
+));
+
+passport.serializeUser(function(user, callback){
+	callback(null, user.name);
+});
+passport.deserializeUser(function(nameVal, callback){
+	UserDAO.find({name: nameVal}, function(err, user){
+		callback(err, user);
+	});
+});
+
+
 
 var routes = require('./routes/index');
-//var users = require('./routes/users');
+var users = require('./routes/users');
 
 var app = express();
 
@@ -22,9 +52,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({secret: 'tbapp', cookie: {maxAge: 600000}})); // session生命周期10分钟
+app.use(passport.initilaize());
+app.use(passport.session());
 
 app.use('/', routes);
-//app.use('/users', users);
+app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
