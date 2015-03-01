@@ -11,13 +11,13 @@ html
 		div(class="panel panel-primary", style="position:absolute; width: 300px; height: 250px; margin:-125px 0 0 -150px; top:50%; left:50%")
 			div(class="panel-heading") 欢迎使用TB管理系统
 			div(class="panel-body")
-				form#loginForm
+				form#loginForm(action="/auth/login", method = "post")
 					div(class="form-group")
 						label(for="lusername") 账户名
-						input#username(type="text", class="form-control")
+						input#username(type="text", class="form-control", name="username")
 					div(class="form-group")
 						label(for="lpassword") 账户密码
-						input#password(type="password", class="form-control")
+						input#password(type="password", class="form-control", name="password")
 					button#login(type="submit", class="btn btn-default") 登录
 					button#cancel(type="submit", class="btn btn-default", style="margin-left:10px") 取消
 					u#register(style="margin-left:10px") 注册
@@ -51,29 +51,32 @@ html
 			});
 
 			// 登录
+			/*
 			$("#login").click(function(){
-				var username = $("#username").val();
-				var password = $("#password").val();
+				var name = $("#username").val();
+				var pwd = $("#password").val();
 
-				if(!username) {
-					alert("账户名不能为空");
-					return;
-				}
+				//if(!username) {
+				//	alert("账户名不能为空");
+				//	return;
+				//}
 
-				if(!password) {
-					alert("账户密码不能为空");
-					return;
-				}
+				//if(!password) {
+				//	alert("账户密码不能为空");
+				//	return;
+				//}
 
 				var user = new Object();
-				user.name = username;
+				user.name = name;
 				user.password = password;
 
-				$.post('/login', user, function(result){
+				alert("username: " + username + " pwd: " + password);
+				$.post('/auth/login', {username: name, password: pwd}, function(result){
 					alert(result);
 				});
-				//alert("username: " + username + " pwd: " + password);
+				
 			});
+			*/
 
 			// 取消
 			$("#cancel").click(function(){

@@ -11,7 +11,12 @@ html
 		div(style="width:50%; margin-left:auto; margin-right:auto; margin-top:30px;")
 			div(class="alert alert-info", role="alert") 剩余TB经费
 				span#left 1000 元
-				button#login(class="btn btn-primary", style="float:right; position:relative; bottom: 7.5px") 登录
+				if username
+					div(style="float:right; position:relative")
+						span= username + "已登录"
+						span#logout(style="margin-left: 10px") 退出
+				else
+					button#login(class="btn btn-primary", style="float:right; position:relative; bottom: 7.5px") 登录
 
 			div(class="panel panel-primary")
 				div(class="panel-heading") 报销情况
@@ -22,13 +27,14 @@ html
 						th 组员人数
 						th TB经费
 						th 组员姓名
-					- each reimburse in reimburses
+					each reimburse in reimburses
 						tr
 							td= reimburse.date
 							td= reimburse.peopleNum
 							td= reimburse.money
 							td= reimburse.people
-			div#addReimburse(class="btn btn-default") 添加报销记录
+			if username && isAdmin
+				div#addReimburse(class="btn btn-default") 添加报销记录
 			
 			div#addReimburseForm(class="well well-lg", style="margin-top:20px")
 				div(class="form-group")
@@ -61,7 +67,9 @@ html
 							td= expense.people
 							td= expense.content
 							td= expense.money
-			div#addExpense(class="btn btn-default") 添加消费记录
+
+			if username && isAdmin
+				div#addExpense(class="btn btn-default") 添加消费记录
 
 			div#addExpenseForm(class="well well-lg", style="margin-top:20px; ")
 				div(class="form-group")
@@ -102,10 +110,15 @@ html
 
 		$(document).ready(function(){
 
-			// 登陆
+			// 登录
 			$("#login").click(function(){
 				$(location).attr('href', '/login');
 			});
+
+			// 登出
+			$("#logout").click(function(){
+				$(location).attr('href', '/auth/logout');
+			})
 			
 			$("#addReimburseForm").hide();
 			$("#addExpenseForm").hide();

@@ -3,8 +3,19 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
+router.get('/login', function(req, res, next){
+		res.render('login', {title: 'TB费用管理'});
+});
+
 /* 获取index页 */
 router.get('/', function(req, res, next) {
+
+	console.log("path / AUTHENTICATED: " + req.isAuthenticated() + " USER: " + req.user );
+	console.log(req.cookies);
+	if(!req.isAuthenticated()) {
+		res.redirect('/login');
+		return;
+	}
 
 	var rfile = 'reimburse.json';
 	var reimburses = jf.readFileSync(rfile, false);
@@ -18,20 +29,19 @@ router.get('/', function(req, res, next) {
 	result.expenseCount = expenses.length;
 	result.expenses = expenses;
 	result.reimburses = reimburses;
+
+	if(req.user != null) {
+		result.username = req.user.name;
+		if(req.user.isAdmin) {
+			result.isAdmin = true;
+		}
+	} else {
+		result.username = null;
+	}
 	
 	console.log(result);
 	res.render('index', result);
 });
-
-// router.get('/login', function(req, res, next){
-// 	res.render('login', {title: 'TB费用管理'});
-// });
-
-router.post('/login', passport.authenticate('local', {
-	successRedirect: '/',
-	failureRedirect: '/login',
-	failureFlash: true
-}));
 
 /*添加TB报销条目*/
 router.post('/tb/reimburse/add', function(req, res, next){
