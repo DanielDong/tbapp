@@ -4,7 +4,7 @@ var router = express.Router();
 module.exports = function(passport){
 
 	router.get('/logout', function(req, res){
-		console.log('logout go to login page');
+		
 		req.logout();
 		res.redirect('/login');
 	});
