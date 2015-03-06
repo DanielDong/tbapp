@@ -34,8 +34,12 @@ UserDAO.prototype.save = function(nameVal, passwordVal, callback){
 	});
 };
 
-UserDAO.prototype.update = function(nameVal, passwordOldVal, passwordNewVal, callback){
-	User.update({name: nameVal, password: passwordOldVal}, {password: passwordNewVal}, function(err, numberAffected, rawResponse){
+UserDAO.prototype.update = function(nameVal, updateFields, callback){
+
+	console.log("DAO update name: " + nameVal + " fields: ");
+	console.log(updateFields);
+
+	User.update({name: nameVal}, updateFields, function(err, numberAffected, rawResponse){
 		if(err){
 			callback(err, -1, null);
 		} else {

@@ -44,10 +44,15 @@ html
 				user.name = username;
 				user.password = password;
 				$.post('/users/save', user, function(result){
-					alert(result);
+					// 注册成功
+					if(result.code == 0) {
+						$(location).attr('href', '/');
+					} 
+					// 注册失败
+					else {
+						alert(result.message);
+					}
 				});
-
-				//alert("username: " + username + " pwd: " + password);
 			});
 
 			// 登录
