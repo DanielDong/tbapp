@@ -55,7 +55,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret: 'tbapp', cookie: {maxAge: 60000}})); // session生命周期3分钟
+app.use(session({secret: 'tbapp', cookie: {maxAge: 600000}})); // session生命周期10分钟
 //app.use(express.session({secret: 'tbapp', cookie: {maxAge: 600000}}));
 app.use(passport.initialize());
 app.use(passport.session());
